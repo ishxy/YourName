@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/themePrimary">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:layout_marginTop="25dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/register_phone_number"
+            style="@style/login_edit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:hint="电话号码"
+            android:inputType="phone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/register_checkcode"
+                style="@style/login_edit"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="5"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:hint="验证码"
+                android:inputType="number" />
+
+
+            <Button
+
+                android:id="@+id/register_getcheckcode"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+
+                android:layout_weight="2"
+                android:background="@drawable/login_button_selector"
+                android:text="获取验证码"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/register_password1"
+            style="@style/login_edit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:hint="密码"
+            android:inputType="textPassword" />
+
+
+        <EditText
+            android:id="@+id/register_password2"
+            style="@style/login_edit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:hint="重复密码"
+            android:inputType="textPassword" />
+
+
+        <EditText
+            android:id="@+id/register_nickname"
+            style="@style/login_edit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:hint="昵称" />
+
+
+        <Button
+            android:id="@+id/register_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/login_button_selector"
+            android:text="完成" />
+
+    </LinearLayout>
+</LinearLayout>
