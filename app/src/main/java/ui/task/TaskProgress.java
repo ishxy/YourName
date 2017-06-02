@@ -27,6 +27,7 @@ import com.google.gson.JsonParser;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shxy.dazuoye.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class TaskProgress extends AppCompatActivity {
     private static final int GETINFO_SUCCESS = 1;
     private static final int GETINFO_FAILUEE = -1;
 
-    private Button changeBt,selectBt;
+    private Button changeBt, selectBt;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,17 +73,18 @@ public class TaskProgress extends AppCompatActivity {
         mFragments = new Fragment[FRAGMENT_NUM];
         mFragments[0] = mFragmentManager.findFragmentById(R.id.fragment1);
         mFragments[1] = mFragmentManager.findFragmentById(R.id.fragment2);
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.hide(mFragments[1]).show(mFragments[0]).commit();
+        //FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        //transaction.hide(mFragments[1]).show(mFragments[0]).commit();
         SelectFragment f = (SelectFragment) mFragments[0];
         //下面按键的回调
         f.setListener(new SelectFragment.Listener() {
             @Override
             public void ok(int state) {
-                switch (state){
+                switch (state) {
                     case SelectFragment.Listener.STATE_OK:
                         break;
                     case SelectFragment.Listener.STATE_NEXT:
+                        getInfo();
                         break;
                 }
             }
@@ -90,17 +92,24 @@ public class TaskProgress extends AppCompatActivity {
     }
 
     private void initView() {
-        mListView = (ListView) findViewById(R.id.list);
-        mAdapter = new Adapter();
-        mListView.setAdapter(mAdapter);
 
-        ImageView back = (ImageView) findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        if (mAdapter == null)
+            mAdapter = new Adapter();
+        else
+            mAdapter.notifyDataSetChanged();
+        if(mListView == null) {
+            mListView = (ListView) findViewById(R.id.list);
+            mListView.setAdapter(mAdapter);
+            ImageView back = (ImageView) findViewById(R.id.back);
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+
+
 
     }
 
@@ -129,8 +138,6 @@ public class TaskProgress extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("info", new String(responseBody));
-                /*Gson gson = new Gson();
-                DiaryListFinal list = gson.fromJson(new String(responseBody),DiaryListFinal.class);*/
                 getJsonInfo(new String(responseBody));
                 handler.sendEmptyMessage(GETINFO_SUCCESS);
             }
@@ -155,18 +162,31 @@ public class TaskProgress extends AppCompatActivity {
         JsonObject object = (JsonObject) parser.parse(json);
         Integer statues = object.get("statues").getAsInt();
         String msg = object.get("msg").getAsString();
+        Integer flag = object.get("flag").getAsInt();
+        if (flag == 1){
+            mFragmentManager.beginTransaction().hide(mFragments[0]).show(mFragments[1]).commit();
+        }else{
+            mFragmentManager.beginTransaction().hide(mFragments[1]).show(mFragments[0]).commit();
+        }
         mList = new ArrayList<>();
         if (statues == 0) {
             Log.i("msg", msg);
             return;
         }
+
         JsonObject data = object.getAsJsonObject("data");
         JsonArray datalist = data.getAsJsonArray("datalist");
+        ArrayList<Integer> taskState = new ArrayList<>();
+        JsonArray state = data.getAsJsonArray("compareresultlist");
+        for(int i=0;i<state.size();i++){
+            //**********//
+        }
 
         for (int i = 0; i < datalist.size(); i++) {
             Diary diary = new Diary();
             JsonObject each = datalist.get(i).getAsJsonObject();
             diary.setContent(each.get("content").getAsString());
+            diary.setContentphote(each.get("contentphote").getAsString());
             mList.add(diary);
         }
     }
@@ -195,10 +215,14 @@ public class TaskProgress extends AppCompatActivity {
             more.setVisibility(View.VISIBLE);
             TextView t = (TextView) convertView.findViewById(R.id.title);
             ImageView i = (ImageView) convertView.findViewById(R.id.isok);
+            ImageView img = (ImageView) convertView.findViewById(R.id.img);
+
             if (position % 2 == 0)
                 i.setImageResource(R.drawable.ok);
             t.setText(mList.get(position).getContent());
-
+            Picasso.with(getApplicationContext())
+                    .load(mList.get(position).getContentphote())
+                    .into(img);
             return convertView;
         }
     }

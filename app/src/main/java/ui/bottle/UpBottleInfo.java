@@ -12,9 +12,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shxy.dazuoye.R;
 
+import cz.msebera.android.httpclient.Header;
 import global.Global;
 import util.HttpRequest;
 
@@ -57,7 +59,18 @@ public class UpBottleInfo extends AppCompatActivity{
         RequestParams params = new RequestParams();
         params.add("userid", Global.MAIN_USER.getId()+"");
         params.add("secretkey",Global.MAIN_USER.getSecretkey());
-        //HttpRequest.post(getApplicationContext(),"",);
+        params.add("",contentEdit.getText().toString());
+        HttpRequest.post(getApplicationContext(), "pushdriftingbottle", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
 }
