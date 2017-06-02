@@ -14,9 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shxy.dazuoye.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.BuildConfig;
@@ -27,6 +33,9 @@ import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.GFImageView;
+import cz.msebera.android.httpclient.Header;
+import global.Global;
+import util.HttpRequest;
 import util.PicassoImageLoader;
 
 /**
@@ -38,6 +47,8 @@ public class UpToday extends AppCompatActivity {
     private TextView cancle, up;
     private EditText info;
     private GFImageView select;
+    private File imgFile;
+    private String fileUrl = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +116,7 @@ public class UpToday extends AppCompatActivity {
             @Override
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                 Toast.makeText(getApplicationContext(), "file://" + resultList.get(0).getPhotoPath(), Toast.LENGTH_SHORT).show();
+                imgFile = new File(resultList.get(0).getPhotoPath());
                 imageloader.displayImage(UpToday.this, resultList.get(0).getPhotoPath(), select, null, 600, 600);
             }
 
@@ -117,8 +129,76 @@ public class UpToday extends AppCompatActivity {
     }
 
     private void upDetails() {
-        String upinfo = info.getText().toString();
 
+        RequestParams params = new RequestParams();
+        if(imgFile!=null){
+            getImageUrl();
+            /*Log.i("fa - url",fileUrl);
+            Toast.makeText(getApplicationContext(),fileUrl +"***" , Toast.LENGTH_SHORT).show();
+            params.add("fileurl",fileUrl);*/
+        }else {
+            upAllInfo(params);
+        }
     }
 
+    private void upAllInfo(RequestParams params) {
+        String upinfo = info.getText().toString();
+        params.add("userid", Global.MAIN_USER.getId()+"");
+        params.add("secretkey",Global.MAIN_USER.getSecretkey());
+        params.add("content",upinfo);
+        params.add("location","呼和浩特");
+
+        HttpRequest.post(getApplicationContext(), "do_push_diary_event", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JsonParser p = new JsonParser();
+                JsonObject o = (JsonObject) p.parse(new String(responseBody));
+                Integer state = o.get("statues").getAsInt();
+                String msg = o.get("msg").getAsString();
+                Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    public void getImageUrl() {
+
+        final RequestParams params = new RequestParams();
+        try {
+            params.add("userid",Global.MAIN_USER.getId()+"");
+            params.add("secretkey",Global.MAIN_USER.getSecretkey());
+            params.put("filename",imgFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        HttpRequest.post(getApplicationContext(), "do_upload_dairy_photo", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JsonParser p = new JsonParser();
+                JsonObject object = (JsonObject) p.parse(new String(responseBody));
+                String msg = object.get("msg").getAsString();
+                Integer state = object.get("statues").getAsInt();
+                if(state!=1)
+                {
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                fileUrl = object.get("fileurl").getAsString();
+                Log.i("shou - url",fileUrl);
+                RequestParams params1 = new RequestParams();
+                params1.add("fileurl",fileUrl);
+                upAllInfo(params1);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
 }

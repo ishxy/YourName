@@ -7,10 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.loopj.android.http.RequestParams;
 import com.shxy.dazuoye.R;
+
+import global.Global;
+import util.HttpRequest;
 
 /**
  * Created by caolu on 2017/5/26.
@@ -18,6 +24,8 @@ import com.shxy.dazuoye.R;
 
 public class UpBottleInfo extends AppCompatActivity{
     private ImageView back;
+    private EditText contentEdit;
+    private TextView upTextView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +43,21 @@ public class UpBottleInfo extends AppCompatActivity{
                 finish();
             }
         });
-    }
+        contentEdit = (EditText) findViewById(R.id.info);
+        upTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                up();
+            }
 
+
+        });
+    }
+    private void up() {
+        RequestParams params = new RequestParams();
+        params.add("userid", Global.MAIN_USER.getId()+"");
+        params.add("secretkey",Global.MAIN_USER.getSecretkey());
+        //HttpRequest.post(getApplicationContext(),"",);
+    }
 
 }

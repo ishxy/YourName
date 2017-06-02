@@ -7,6 +7,6 @@ import bean.User;
  */
 
 public class Global {
-    public static boolean DEBUG_FINISH = false;
+    public static boolean DEBUG_FINISH = true;
     public static User MAIN_USER ;
 }
