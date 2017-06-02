@@ -76,14 +76,17 @@ public class Login extends BaseActivity implements View.OnClickListener {
                             editor.putInt("id",user.getId());
                             editor.putString("sec",user.getSecretkey());
                             editor.commit();
+                            Global.MAIN_USER = user;
                             finish();
+                        }else{
+                            Toast.makeText(getApplicationContext(),user.getMsg(),Toast.LENGTH_SHORT).show();
                         }
-                        Global.MAIN_USER = user;
+
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(getApplicationContext(),"账号或密码错误",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"网络错误",Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;

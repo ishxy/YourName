@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             Integer id = preferences.getInt("id",0);
             String sec = preferences.getString("sec","null");
             User u = new User();
-            u.setUserphone(id+"");
+            u.setId(id);
             u.setSecretkey(sec);
             Global.MAIN_USER = u;
 

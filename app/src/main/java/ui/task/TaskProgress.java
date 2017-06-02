@@ -155,13 +155,14 @@ public class TaskProgress extends AppCompatActivity {
         JsonObject object = (JsonObject) parser.parse(json);
         Integer statues = object.get("statues").getAsInt();
         String msg = object.get("msg").getAsString();
+        mList = new ArrayList<>();
         if (statues == 0) {
             Log.i("msg", msg);
             return;
         }
         JsonObject data = object.getAsJsonObject("data");
         JsonArray datalist = data.getAsJsonArray("datalist");
-        mList = new ArrayList<>();
+
         for (int i = 0; i < datalist.size(); i++) {
             Diary diary = new Diary();
             JsonObject each = datalist.get(i).getAsJsonObject();
