@@ -39,7 +39,7 @@ public class TodayMain extends AppCompatActivity {
 
     private ArrayList<String> mList;
     private MyAdapter mAdapter;
-    private Toolbar mToolbar;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +68,13 @@ public class TodayMain extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), UpToday.class));
                 if (Global.DEBUG_FINISH)
                     finish();
+            }
+        });
+        ImageView back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
