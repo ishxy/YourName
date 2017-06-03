@@ -3,6 +3,7 @@ package ui.self;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class SelfMain extends AppCompatActivity{
             Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
             return;
         }
+        Log.i("json",jsonString);
         String name = o.get("username").getAsString();
         Integer age = o.get("age").getAsInt();
         String sex = o.get("sex").getAsString();

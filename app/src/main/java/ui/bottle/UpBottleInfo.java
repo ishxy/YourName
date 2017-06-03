@@ -46,6 +46,7 @@ public class UpBottleInfo extends AppCompatActivity{
             }
         });
         contentEdit = (EditText) findViewById(R.id.info);
+        upTextView = (TextView) findViewById(R.id.up);
         upTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +60,7 @@ public class UpBottleInfo extends AppCompatActivity{
         RequestParams params = new RequestParams();
         params.add("userid", Global.MAIN_USER.getId()+"");
         params.add("secretkey",Global.MAIN_USER.getSecretkey());
-        params.add("",contentEdit.getText().toString());
+        params.add("bottlecontent",contentEdit.getText().toString());
         HttpRequest.post(getApplicationContext(), "pushdriftingbottle", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

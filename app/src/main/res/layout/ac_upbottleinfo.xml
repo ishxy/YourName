@@ -5,6 +5,38 @@
     android:orientation="vertical"
     >
 
+    <view.FrameRelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="40dp">
+
+       <!--- <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_alignParentTop="true"
+            android:hint="标题"
+            android:textColor="#000"
+            android:textSize="24dp" /> -->
+
+        <EditText
+            android:hint="内容"
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="5dp"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:gravity="start"/>
+
+
+    </view.FrameRelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -40,35 +72,4 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-    <view.FrameRelativeLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="40dp">
-
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-
-            android:layout_alignParentTop="true"
-            android:hint="标题"
-            android:textColor="#000"
-            android:textSize="24dp" />
-
-        <EditText
-            android:hint="内容"
-            android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/title"
-            android:layout_marginTop="5dp"
-            android:textColor="#000"
-            android:textSize="16sp"
-            android:gravity="start"/>
-
-
-    </view.FrameRelativeLayout>
 </LinearLayout>
