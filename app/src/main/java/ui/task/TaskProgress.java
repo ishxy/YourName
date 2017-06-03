@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import bean.BaseBean;
 import bean.Diary;
 import bean.DiaryList;
 import bean.DiaryListFinal;
@@ -58,6 +60,11 @@ public class TaskProgress extends AppCompatActivity {
 
     private Button changeBt, selectBt;
     private Integer flag;
+    private Double nowProgress = 0D;
+    private static final int SELECT_FRAGMENT = 0, PROGRESS_FRAGMENT = 1;
+    private static final int[] FRAGMENT_NAME = {SELECT_FRAGMENT, PROGRESS_FRAGMENT};
+    private int randuserid = -1;
+    private String choisenday = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +77,9 @@ public class TaskProgress extends AppCompatActivity {
         initFragments();
     }
 
+    /**
+     * 初始化Fragment以及不需要网络的控件
+     */
     private void initFragments() {
         ImageView back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +101,7 @@ public class TaskProgress extends AppCompatActivity {
             public void ok(int state) {
                 switch (state) {
                     case SelectFragment.Listener.STATE_OK:
+                        check();
                         break;
                     case SelectFragment.Listener.STATE_NEXT:
                         getInfo();
@@ -100,20 +111,54 @@ public class TaskProgress extends AppCompatActivity {
         });
     }
 
+    /**
+     * 确认选择该任务
+     */
+    private void check() {
+        if (randuserid == -1)
+            return;
+        RequestParams params = new RequestParams();
+        params.add("userid", Global.MAIN_USER.getId() + "");
+        params.add("secretkey", Global.MAIN_USER.getSecretkey());
+        params.add("randuserid",randuserid+"");
+        params.add("choisenday",choisenday);
+        HttpRequest.post(TaskProgress.this, "others_diary/do_choice_others_diary", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                BaseBean b;
+                Gson gson = new Gson();
+                b = gson.fromJson(new String(responseBody), BaseBean.class);
+                if (b != null) {
+                    Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
+                    if (b.getStatues() == 1) {
+                        showFragment(PROGRESS_FRAGMENT);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getApplicationContext(), "网络错误", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 根据网络请求结果初始化界面
+     */
     private void initView() {
 
         if (mAdapter == null)
             mAdapter = new Adapter();
         else
             mAdapter.notifyDataSetChanged();
-        if(mListView == null) {
+        if (mListView == null) {
             mListView = (ListView) findViewById(R.id.list);
             mListView.setAdapter(mAdapter);
 
         }
-
-
-
+        Double temp = nowProgress * 100;
+        ((ProgressFragment) mFragments[1]).setProgress(temp.intValue());
     }
 
     private Handler handler = new Handler() {
@@ -130,6 +175,9 @@ public class TaskProgress extends AppCompatActivity {
         }
     };
 
+    /**
+     * 请求网络资源
+     */
     public void getInfo() {
 
         RequestParams params = new RequestParams();
@@ -137,7 +185,7 @@ public class TaskProgress extends AppCompatActivity {
         params.add("secretkey", Global.MAIN_USER.getSecretkey());
         Log.i("userid", Global.MAIN_USER.getId() + "");
         Log.i("secretkey", Global.MAIN_USER.getSecretkey());
-        HttpRequest.get(getApplicationContext(), "others_diary/do_push_others_diary_to_user", params, new AsyncHttpResponseHandler() {
+        HttpRequest.get(TaskProgress.this, "others_diary/do_push_others_diary_to_user", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("info", new String(responseBody));
@@ -147,7 +195,7 @@ public class TaskProgress extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TaskProgress.this, "error", Toast.LENGTH_SHORT).show();
                 handler.sendEmptyMessage(GETINFO_FAILUEE);
             }
         });
@@ -165,11 +213,15 @@ public class TaskProgress extends AppCompatActivity {
         JsonObject object = (JsonObject) parser.parse(json);
         Integer statues = object.get("statues").getAsInt();
         String msg = object.get("msg").getAsString();
+
         flag = object.get("flag").getAsInt();
-        if (flag == 1){
+        if (flag == 1) {
             mFragmentManager.beginTransaction().hide(mFragments[0]).show(mFragments[1]).commit();
-        }else{
+            nowProgress = object.get("completiondegree").getAsDouble();
+        } else {
             mFragmentManager.beginTransaction().hide(mFragments[1]).show(mFragments[0]).commit();
+            randuserid = object.get("randuserid").getAsInt();
+            choisenday = object.get("choisenday").getAsString();
         }
         mList = new ArrayList<>();
         if (statues == 0) {
@@ -177,12 +229,15 @@ public class TaskProgress extends AppCompatActivity {
             return;
         }
 
-        JsonObject data = object.getAsJsonObject("data");
-        JsonArray datalist = data.getAsJsonArray("datalist");
+
+        JsonArray datalist = object.getAsJsonArray("datalist");
         taskState = new ArrayList<>();
-        JsonArray state = data.getAsJsonArray("compareresultlist");
-        for(int i=0;i<state.size();i++){
-            taskState.add(state.getAsInt());
+        if (flag == 1) {
+            JsonArray state = object.getAsJsonArray("compareresultlist");
+            for (int i = 0; i < state.size(); i++) {
+                Log.i("ljnint", state.get(i).getAsInt() + "");
+                taskState.add(state.get(i).getAsInt());
+            }
         }
 
         for (int i = 0; i < datalist.size(); i++) {
@@ -192,6 +247,17 @@ public class TaskProgress extends AppCompatActivity {
             diary.setContentphote(each.get("contentphote").getAsString());
             mList.add(diary);
         }
+    }
+
+    private void showFragment(int which) {
+        FragmentTransaction f = mFragmentManager.beginTransaction();
+        for (int i = 0; i < FRAGMENT_NAME.length; i++) {
+            if (FRAGMENT_NAME[i] == which)
+                f.show(mFragments[i]);
+            else
+                f.hide(mFragments[i]);
+        }
+        f.commit();
     }
 
     private class Adapter extends BaseAdapter {
@@ -213,20 +279,20 @@ public class TaskProgress extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_taskprocess, null);
+            convertView = LayoutInflater.from(TaskProgress.this).inflate(R.layout.item_taskprocess, null);
             TextView more = (TextView) convertView.findViewById(R.id.more);
             more.setVisibility(View.VISIBLE);
             TextView t = (TextView) convertView.findViewById(R.id.title);
             ImageView i = (ImageView) convertView.findViewById(R.id.isok);
             ImageView img = (ImageView) convertView.findViewById(R.id.img);
 
-           if(flag == 1){
-               if(taskState.get(position) == 1){
-                   i.setImageResource(R.drawable.ok);
-               }
-           }
+            if (flag == 1) {
+                if (taskState.get(position) == 1) {
+                    i.setImageResource(R.drawable.ok);
+                }
+            }
             t.setText(mList.get(position).getContent());
-            Picasso.with(getApplicationContext())
+            Picasso.with(TaskProgress.this)
                     .load(mList.get(position).getContentphote())
                     .into(img);
             return convertView;
