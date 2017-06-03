@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.shxy.dazuoye.R;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 import bean.User;
 import global.Global;
 import ui.login.Login;
+import ui.self.SelfMain;
 import ui.task.TaskProgress;
 import ui.bottle.BottleCatalog;
 import ui.history.HistoryBill;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
     private MyAdapter mAdapter;
     private ArrayList<String> mInfo;
+    private ImageView img ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,21 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_main);
         initListItem();
+        initView();
 
+    }
 
+    private void initView() {
+        img = (ImageView) findViewById(R.id.image);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), SelfMain.class));
+                if (Global.DEBUG_FINISH){
+                    finish();
+                }
+            }
+        });
     }
 
     private void setInfo() {

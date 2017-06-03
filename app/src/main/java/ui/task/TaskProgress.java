@@ -47,6 +47,7 @@ public class TaskProgress extends AppCompatActivity {
 
     private ListView mListView;
     private ArrayList<Diary> mList;
+    private ArrayList<Integer> taskState;
     private Adapter mAdapter;
     private FragmentManager mFragmentManager;
     private Fragment mFragments[];
@@ -56,6 +57,7 @@ public class TaskProgress extends AppCompatActivity {
     private static final int GETINFO_FAILUEE = -1;
 
     private Button changeBt, selectBt;
+    private Integer flag;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,12 +71,19 @@ public class TaskProgress extends AppCompatActivity {
     }
 
     private void initFragments() {
+        ImageView back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mFragmentManager = getSupportFragmentManager();
         mFragments = new Fragment[FRAGMENT_NUM];
         mFragments[0] = mFragmentManager.findFragmentById(R.id.fragment1);
         mFragments[1] = mFragmentManager.findFragmentById(R.id.fragment2);
-        //FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        //transaction.hide(mFragments[1]).show(mFragments[0]).commit();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.hide(mFragments[1]).hide(mFragments[0]).commit();
         SelectFragment f = (SelectFragment) mFragments[0];
         //下面按键的回调
         f.setListener(new SelectFragment.Listener() {
@@ -100,13 +109,7 @@ public class TaskProgress extends AppCompatActivity {
         if(mListView == null) {
             mListView = (ListView) findViewById(R.id.list);
             mListView.setAdapter(mAdapter);
-            ImageView back = (ImageView) findViewById(R.id.back);
-            back.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+
         }
 
 
@@ -162,7 +165,7 @@ public class TaskProgress extends AppCompatActivity {
         JsonObject object = (JsonObject) parser.parse(json);
         Integer statues = object.get("statues").getAsInt();
         String msg = object.get("msg").getAsString();
-        Integer flag = object.get("flag").getAsInt();
+        flag = object.get("flag").getAsInt();
         if (flag == 1){
             mFragmentManager.beginTransaction().hide(mFragments[0]).show(mFragments[1]).commit();
         }else{
@@ -176,10 +179,10 @@ public class TaskProgress extends AppCompatActivity {
 
         JsonObject data = object.getAsJsonObject("data");
         JsonArray datalist = data.getAsJsonArray("datalist");
-        ArrayList<Integer> taskState = new ArrayList<>();
+        taskState = new ArrayList<>();
         JsonArray state = data.getAsJsonArray("compareresultlist");
         for(int i=0;i<state.size();i++){
-            //**********//
+            taskState.add(state.getAsInt());
         }
 
         for (int i = 0; i < datalist.size(); i++) {
@@ -217,8 +220,11 @@ public class TaskProgress extends AppCompatActivity {
             ImageView i = (ImageView) convertView.findViewById(R.id.isok);
             ImageView img = (ImageView) convertView.findViewById(R.id.img);
 
-            if (position % 2 == 0)
-                i.setImageResource(R.drawable.ok);
+           if(flag == 1){
+               if(taskState.get(position) == 1){
+                   i.setImageResource(R.drawable.ok);
+               }
+           }
             t.setText(mList.get(position).getContent());
             Picasso.with(getApplicationContext())
                     .load(mList.get(position).getContentphote())
