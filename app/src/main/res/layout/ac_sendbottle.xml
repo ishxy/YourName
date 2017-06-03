@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:layout_centerHorizontal="true"
-            android:text="收到的瓶子"
+            android:text="发送的瓶子"
             android:textSize="20sp"
             android:textColor="#fff"
             />
