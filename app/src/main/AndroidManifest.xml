@@ -35,6 +35,8 @@
         </activity>
         <activity android:name="ui.login.Login"/>
         <activity android:name="ui.self.SelfMain"/>
+        <activity android:name="ui.bottle.FriendList"/>
+
     </application>
 
 </manifest>
