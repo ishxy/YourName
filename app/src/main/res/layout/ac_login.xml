@@ -47,12 +47,12 @@
         android:background="@drawable/login_button_selector"
         />
 
-    <!--<RelativeLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingBottom="10dp">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/login_to_losspass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,10 +62,10 @@
             android:textColor="#4A4AFF"
             android:layout_marginLeft="10dp"
 
-            android:textSize="18sp" />
+            android:textSize="18sp" />  -->
 
         <TextView
-            android:id="@+id/login_to_register"
+            android:id="@+id/register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -75,6 +75,6 @@
             android:layout_marginRight="10dp"
             android:textColor="#4A4AFF"
             android:textSize="18sp" />
-    </RelativeLayout>-->
+    </RelativeLayout>
 
 </LinearLayout>

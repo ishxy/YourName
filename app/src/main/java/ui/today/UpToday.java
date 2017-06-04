@@ -156,7 +156,8 @@ public class UpToday extends AppCompatActivity {
                 Integer state = o.get("statues").getAsInt();
                 String msg = o.get("msg").getAsString();
                 Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
-
+                setResult(1);
+                finish();
             }
 
             @Override

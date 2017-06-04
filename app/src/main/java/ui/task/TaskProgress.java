@@ -280,8 +280,8 @@ public class TaskProgress extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = LayoutInflater.from(TaskProgress.this).inflate(R.layout.item_taskprocess, null);
-            TextView more = (TextView) convertView.findViewById(R.id.more);
-            more.setVisibility(View.VISIBLE);
+            //TextView more = (TextView) convertView.findViewById(R.id.more);
+            //more.setVisibility(View.VISIBLE);
             TextView t = (TextView) convertView.findViewById(R.id.title);
             ImageView i = (ImageView) convertView.findViewById(R.id.isok);
             ImageView img = (ImageView) convertView.findViewById(R.id.img);

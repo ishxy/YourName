@@ -1,5 +1,6 @@
 package ui.login;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +34,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
    // private TextView registerText, loseText;
     private ImageView img;
     private Button loginButton;
+    private TextView toRegister;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class Login extends BaseActivity implements View.OnClickListener {
         loginButton = (Button) findViewById(R.id.login_button);
         img = (ImageView) findViewById(R.id.userimage);
         loginButton.setOnClickListener(this);
+        toRegister = (TextView) findViewById(R.id.register);
+        toRegister.setOnClickListener(this);
     }
 
     @Override
@@ -90,9 +94,10 @@ public class Login extends BaseActivity implements View.OnClickListener {
                     }
                 });
                 break;
-            /*case R.id.login_to_register:
+            case R.id.register:
+                startActivity(new Intent(Login.this,Register.class));
                 break;
-            case R.id.login_to_losspass:
+            /*case R.id.login_to_losspass:
                 break;*/
         }
     }

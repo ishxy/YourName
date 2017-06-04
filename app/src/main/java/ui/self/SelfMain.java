@@ -24,6 +24,7 @@ import com.shxy.dazuoye.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import bean.BaseBean;
@@ -39,12 +40,13 @@ import global.Global;
 import ui.today.UpToday;
 import util.HttpRequest;
 import util.PicassoImageLoader;
+import view.BaseActivity;
 
 /**
  * Created by caolu on 2017/6/3.
  */
 
-public class SelfMain extends AppCompatActivity implements View.OnClickListener {
+public class SelfMain extends BaseActivity implements View.OnClickListener {
 
     private ImageView back;
     private GFImageView img;
@@ -175,20 +177,20 @@ public class SelfMain extends AppCompatActivity implements View.OnClickListener 
          * 上传年龄
          */
         RequestParams params = new RequestParams();
-        params.add("userid", Global.MAIN_USER.getId()+"");
-        params.add("secretkey",Global.MAIN_USER.getSecretkey());
-        params.add("age",s);
+        params.add("userid", Global.MAIN_USER.getId() + "");
+        params.add("secretkey", Global.MAIN_USER.getSecretkey());
+        params.add("age", s);
         HttpRequest.post(getApplicationContext(), "ChangePersonalInformation", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Gson gson = new Gson();
                 BaseBean b = gson.fromJson(new String(responseBody), BaseBean.class);
-                Toast.makeText(getApplicationContext(),b.getMsg(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(),new String(responseBody),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), new String(responseBody), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -229,20 +231,24 @@ public class SelfMain extends AppCompatActivity implements View.OnClickListener 
                  * 上传图片
                  */
                 RequestParams params = new RequestParams();
-                params.add("userid", Global.MAIN_USER.getId()+"");
-                params.add("secretkey",Global.MAIN_USER.getSecretkey());
-                params.add("userphoto",imgFile.getPath());
-                HttpRequest.post(getApplicationContext(), "ChangePersonalInformation", params, new AsyncHttpResponseHandler() {
+                params.add("userid", Global.MAIN_USER.getId() + "");
+                params.add("secretkey", Global.MAIN_USER.getSecretkey());
+                try {
+                    params.put("userphoto", imgFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                HttpRequest.post(getApplicationContext(), "do_change_head_photo", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Gson gson = new Gson();
                         BaseBean b = gson.fromJson(new String(responseBody), BaseBean.class);
-                        Toast.makeText(getApplicationContext(),b.getMsg(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(getApplicationContext(),new String(responseBody),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), new String(responseBody), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -257,27 +263,28 @@ public class SelfMain extends AppCompatActivity implements View.OnClickListener 
 
 
     private void upSexInfo(int which) {
-        String[] sex = {"男","女"};
-        Toast.makeText(getApplicationContext(),sex[which],Toast.LENGTH_SHORT).show();
+        String[] sex = {"男", "女"};
+        //Toast.makeText(getApplicationContext(),sex[which],Toast.LENGTH_SHORT).show();
         sexText.setText(sex[which]);
         /**
          * 上传性别逻辑
          */
         RequestParams params = new RequestParams();
-        params.add("userid", Global.MAIN_USER.getId()+"");
-        params.add("secretkey",Global.MAIN_USER.getSecretkey());
-        params.add("sex",sex[which]);
+        params.add("userid", Global.MAIN_USER.getId() + "");
+        params.add("secretkey", Global.MAIN_USER.getSecretkey());
+        params.add("sex", sex[which]);
+        //params.put("userphoto",new File(""));
         HttpRequest.post(getApplicationContext(), "ChangePersonalInformation", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Gson gson = new Gson();
                 BaseBean b = gson.fromJson(new String(responseBody), BaseBean.class);
-                Toast.makeText(getApplicationContext(),b.getMsg(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(),new String(responseBody),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), new String(responseBody), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -290,20 +297,20 @@ public class SelfMain extends AppCompatActivity implements View.OnClickListener 
             Bundle b = data.getExtras();
             nameText.setText(b.getString("info"));
             RequestParams params = new RequestParams();
-            params.add("userid", Global.MAIN_USER.getId()+"");
-            params.add("secretkey",Global.MAIN_USER.getSecretkey());
-            params.add("user",b.getString("info"));
+            params.add("userid", Global.MAIN_USER.getId() + "");
+            params.add("secretkey", Global.MAIN_USER.getSecretkey());
+            params.add("username", b.getString("info"));
             HttpRequest.post(getApplicationContext(), "ChangePersonalInformation", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Gson gson = new Gson();
                     BaseBean b = gson.fromJson(new String(responseBody), BaseBean.class);
-                    Toast.makeText(getApplicationContext(),b.getMsg(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(getApplicationContext(),new String(responseBody),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), new String(responseBody), Toast.LENGTH_SHORT).show();
                 }
             });
         }
