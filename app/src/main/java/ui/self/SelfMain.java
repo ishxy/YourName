@@ -1,11 +1,13 @@
 package ui.self;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +26,7 @@ import util.HttpRequest;
  * Created by caolu on 2017/6/3.
  */
 
-public class SelfMain extends AppCompatActivity{
+public class SelfMain extends AppCompatActivity implements View.OnClickListener{
 
     private ImageView img ,back;
     private TextView nameText,sexText,ageText;
@@ -86,5 +88,37 @@ public class SelfMain extends AppCompatActivity{
         nameText = (TextView) findViewById(R.id.name);
         sexText = (TextView) findViewById(R.id.sex);
         ageText = (TextView) findViewById(R.id.age);
+        RelativeLayout r1 = (RelativeLayout) findViewById(R.id.imgL);
+        RelativeLayout r2 = (RelativeLayout) findViewById(R.id.nameL);
+        RelativeLayout r3 = (RelativeLayout) findViewById(R.id.sexL);
+        RelativeLayout r4 = (RelativeLayout) findViewById(R.id.ageL);
+        r1.setOnClickListener(this);
+        r2.setOnClickListener(this);
+        r3.setOnClickListener(this);
+        r4.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.imgL:
+                break;
+            case R.id.nameL:
+                Bundle bundle = new Bundle();
+                String title,tip,info,url,param;
+                bundle.putString("title","修改名字");
+                bundle.putString("tip","一个好的名字可以朋友更好的记住");
+                bundle.putString("info",nameText.getText().toString());
+                bundle.putString("url","");
+                bundle.putString("param","");
+                Intent intent = new Intent(SelfMain.this,ChangeInfo.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            case R.id.sexL:
+                break;
+            case R.id.ageL:
+                break;
+        }
     }
 }

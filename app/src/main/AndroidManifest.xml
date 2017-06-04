@@ -37,6 +37,7 @@
         <activity android:name="ui.self.SelfMain"/>
         <activity android:name="ui.bottle.FriendList"/>
         <activity android:name="ui.bottle.SendBottle"/>
+        <activity android:name="ui.self.ChangeInfo"/>
     </application>
 
 </manifest>

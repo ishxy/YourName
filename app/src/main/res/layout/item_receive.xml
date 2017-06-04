@@ -28,18 +28,22 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:background="#fafafa"
-        android:src="@drawable/bottle" />
+        android:src="@drawable/bottle"
+        android:id="@+id/imageView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_alignParentRight="true"
         android:layout_marginRight="60dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="17dp"
         android:background="#fafafa"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="from 后端组   201.5.12"
-        android:textColor="#000" />
+        android:text="   201.5.12"
+        android:textColor="#000"
+        android:layout_below="@+id/imageView"
+        android:layout_alignEnd="@+id/text"
+        android:layout_marginEnd="27dp"
+        android:id="@+id/textView" />
 </RelativeLayout>
