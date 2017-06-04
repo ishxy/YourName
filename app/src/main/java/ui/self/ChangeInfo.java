@@ -1,5 +1,6 @@
 package ui.self;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -51,8 +52,16 @@ public class ChangeInfo extends BaseActivity{
         });
     }
 
+    /**
+     * 修改姓名网络请求
+     */
     private void upInfo() {
-
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("info",infoEidt.getText().toString());
+        intent.putExtras(bundle);
+        setResult(1,intent);
+        finish();
     }
 
     private void setInfo() {
