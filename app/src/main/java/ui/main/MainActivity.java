@@ -10,8 +10,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.shxy.dazuoye.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter mAdapter;
     private ArrayList<String> mInfo;
     private ImageView img ;
+    private TextView name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         img = (ImageView) findViewById(R.id.image);
+        Picasso.with(getApplicationContext())
+                .load(Global.MAIN_USER.getUserphoto())
+                .into(img);
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        name = (TextView) findViewById(R.id.name);
+        name.setText(Global.MAIN_USER.getUsername());
     }
 
     private void setInfo() {
@@ -68,11 +77,15 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences preferences = getSharedPreferences("firstinfo",MODE_PRIVATE);
             Integer id = preferences.getInt("id",0);
             String sec = preferences.getString("sec","null");
+            String username = preferences.getString("username","null");
+            String photo = preferences.getString("photo",null);
+            Log.i("photo",photo);
             User u = new User();
             u.setId(id);
             u.setSecretkey(sec);
+            u.setUsername(username);
+            u.setUserphoto(photo);
             Global.MAIN_USER = u;
-
         }
     }
 

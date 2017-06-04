@@ -38,6 +38,7 @@
         <activity android:name="ui.bottle.FriendList"/>
         <activity android:name="ui.bottle.SendBottle"/>
         <activity android:name="ui.self.ChangeInfo"/>
+        <activity android:name="ui.history.HistoryDay"/>
     </application>
 
 </manifest>

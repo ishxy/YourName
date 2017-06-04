@@ -1,9 +1,10 @@
 package bean;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Diary {
+public class Diary implements Serializable{
 
     private int id;
 

@@ -3,6 +3,7 @@ package ui.self;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -242,6 +243,12 @@ public class SelfMain extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Gson gson = new Gson();
+                        SharedPreferences preferences = getSharedPreferences("firstinfo",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        String photo = imgFile.getPath();
+                        editor.putString("photo",photo);
+                        editor.commit();
+                        Global.MAIN_USER.setUserphoto(photo);
                         BaseBean b = gson.fromJson(new String(responseBody), BaseBean.class);
                         Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -295,6 +302,7 @@ public class SelfMain extends BaseActivity implements View.OnClickListener {
         //返回名字
         if (requestCode == 0 && resultCode == 1) {
             Bundle b = data.getExtras();
+            final String name = b.getString("info");
             nameText.setText(b.getString("info"));
             RequestParams params = new RequestParams();
             params.add("userid", Global.MAIN_USER.getId() + "");
@@ -306,6 +314,11 @@ public class SelfMain extends BaseActivity implements View.OnClickListener {
                     Gson gson = new Gson();
                     BaseBean b = gson.fromJson(new String(responseBody), BaseBean.class);
                     Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
+                    Global.MAIN_USER.setUsername(name);
+                    SharedPreferences preferences = getSharedPreferences("firstinfo",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("username",name);
+                    editor.commit();
                 }
 
                 @Override

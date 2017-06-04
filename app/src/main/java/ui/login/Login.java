@@ -79,6 +79,8 @@ public class Login extends BaseActivity implements View.OnClickListener {
                             editor.putBoolean("first",false);
                             editor.putInt("id",user.getId());
                             editor.putString("sec",user.getSecretkey());
+                            editor.putString("username",user.getUsername());
+                            editor.putString("photo",user.getUserphoto());
                             editor.commit();
                             Global.MAIN_USER = user;
                             finish();
