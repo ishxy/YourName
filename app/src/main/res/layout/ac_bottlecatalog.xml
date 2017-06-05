@@ -42,5 +42,5 @@
         android:layout_marginLeft="16dp"
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_hight="wrap_content"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>
