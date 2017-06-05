@@ -11,10 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shxy.dazuoye.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mInfo;
     private ImageView img ;
     private TextView name;
+
 
 
     @Override
@@ -56,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         img = (ImageView) findViewById(R.id.image);
-        Picasso.with(getApplicationContext())
+        /*Picasso.with(getApplicationContext())
                 .load(Global.MAIN_USER.getUserphoto())
-                .into(img);
+                .into(img);*/
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,12 +95,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        name.setText(Global.MAIN_USER.getUsername());
+        img.setImageBitmap(null);
+        Picasso.with(MainActivity.this)
+                .load(new File(Global.MAIN_USER.getUserphoto()))
+                .into(img);
+        Log.i("main photopath",Global.MAIN_USER.getUserphoto());
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("re",requestCode + " " + resultCode);
         if (requestCode == 1){
             if (resultCode == Login.RESULT_FINISH)
                 finish();
         }
+
     }
 
     private boolean isFirst()

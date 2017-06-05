@@ -53,6 +53,7 @@ public class SelfMain extends BaseActivity implements View.OnClickListener {
     private GFImageView img;
     private TextView nameText, sexText, ageText;
     private File imgFile;
+    private String imgfileString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -226,7 +227,8 @@ public class SelfMain extends BaseActivity implements View.OnClickListener {
             @Override
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                 Toast.makeText(getApplicationContext(), "file://" + resultList.get(0).getPhotoPath(), Toast.LENGTH_SHORT).show();
-                imgFile = new File(resultList.get(0).getPhotoPath());
+                imgfileString = resultList.get(0).getPhotoPath();
+                imgFile = new File(imgfileString);
                 imageloader.displayImage(SelfMain.this, resultList.get(0).getPhotoPath(), img, null, 600, 600);
                 /**
                  * 上传图片
@@ -245,10 +247,11 @@ public class SelfMain extends BaseActivity implements View.OnClickListener {
                         Gson gson = new Gson();
                         SharedPreferences preferences = getSharedPreferences("firstinfo",MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
-                        String photo = imgFile.getPath();
-                        editor.putString("photo",photo);
+
+                        editor.putString("photo",imgfileString);
+                        Log.i("imgfileString + " , imgfileString);
                         editor.commit();
-                        Global.MAIN_USER.setUserphoto(photo);
+                        Global.MAIN_USER.setUserphoto(imgfileString);
                         BaseBean b = gson.fromJson(new String(responseBody), BaseBean.class);
                         Toast.makeText(getApplicationContext(), b.getMsg(), Toast.LENGTH_SHORT).show();
                     }
