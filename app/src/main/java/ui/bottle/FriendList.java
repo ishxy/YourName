@@ -43,6 +43,7 @@ public class FriendList extends BaseActivity {
     private ListView mListView;
     private ArrayList<User> mList;
     private MyAdapter adapter;
+    private TextView back;
 
 
     @Override
@@ -56,6 +57,13 @@ public class FriendList extends BaseActivity {
 
     private void initView() {
         mListView = (ListView) findViewById(R.id.list);
+        back = (TextView) findViewById(R.id.cancle);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         setInfo();
     }
 
@@ -132,7 +140,7 @@ public class FriendList extends BaseActivity {
             convertView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_friendlist, null);
             ImageView img = (ImageView) convertView.findViewById(R.id.img);
             TextView t = (TextView) convertView.findViewById(R.id.name);
-            t.setText(mList.get(position).getUsername());
+            t.setText("姓名：" + mList.get(position).getUsername());
             Picasso.with(getApplicationContext())
                     .load(mList.get(position).getUserphoto())
                     .into(img);

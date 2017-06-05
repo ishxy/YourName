@@ -27,7 +27,7 @@ public class BottleCatalog extends Activity {
     private ListView mListView;
     private ArrayList<String> mList;
     private ImageView back;
-    private final Class<?>[] mTargets = {FriendList.class, ReceiveBottle.class,ReceiveBottle.class};
+    private final Class<?>[] mTargets = {FriendList.class, SendBottle.class,ReceiveBottle.class};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

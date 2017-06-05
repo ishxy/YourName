@@ -1,5 +1,6 @@
 package ui.bottle;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,11 +19,8 @@ import com.shxy.dazuoye.R;
 public class ReveiveDetails extends AppCompatActivity{
 
     private ImageView back;
-    private TextView mTitle;
     private TextView mContent;
     private final String space = "    ";
-    private String testTitle = "鹊桥仙";
-    private String testContent = "纤云弄巧，飞星传恨，银汉迢迢暗度。金风玉露一相逢，便胜却人间无数。\n柔情似水，佳期如梦，忍顾鹊桥归路。两情若是久长时，又岂在朝朝暮暮";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,16 +31,26 @@ public class ReveiveDetails extends AppCompatActivity{
     }
 
     private void initView() {
-        mTitle = (TextView) findViewById(R.id.title);
         mContent = (TextView) findViewById(R.id.info);
-        mTitle.setText(testTitle);
-        mContent.setText(space + testContent);
-        //mContent.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        Bundle bundle = getIntent().getExtras();
+        mContent.setText(bundle.getString("info"));
+        final Integer id = bundle.getInt("id");
+        TextView reback = (TextView) findViewById(R.id.reback);
+        reback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
+                Intent intent = new Intent(ReveiveDetails.this, UpBottleInfo.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }

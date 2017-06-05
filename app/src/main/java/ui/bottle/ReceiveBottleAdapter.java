@@ -11,14 +11,16 @@ import com.shxy.dazuoye.R;
 
 import java.util.ArrayList;
 
+import bean.DriftingBottle;
+
 /**
  * Created by caolu on 2017/5/10.
  */
 public class ReceiveBottleAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<String> mInfo;
-    ReceiveBottleAdapter(Context context , ArrayList<String> list){
+    private ArrayList<DriftingBottle> mInfo;
+    ReceiveBottleAdapter(Context context , ArrayList<DriftingBottle> list){
         mInfo = list;
         mContext = context;
     }
@@ -41,8 +43,8 @@ public class ReceiveBottleAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_receive,null);
-        TextView textView = (TextView) convertView.findViewById(R.id.text);
-        textView.setText(mInfo.get(position).toString());
+        TextView time = (TextView) convertView.findViewById(R.id.time);
+        time.setText(mInfo.get(position).getTime());
         return convertView;
     }
 }

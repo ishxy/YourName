@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
             u.setUsername(username);
             u.setUserphoto(photo);
             Global.MAIN_USER = u;
+        }else{
+            Log.i("global.user","not null");
         }
     }
 

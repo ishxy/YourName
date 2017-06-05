@@ -8,27 +8,40 @@
     >
 
     <RelativeLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#5677fc"
-        android:fitsSystemWindows="true"
-        android:gravity="center_vertical"
-        android:paddingRight="16dp">
-
+        android:layout_height="70dp"
+        android:background="#24bd41">
         <ImageView
             android:id="@+id/back"
-            android:layout_centerVertical="true"
-            android:layout_width="40dp"
+            android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/arw" />
 
+            android:src="@drawable/arw"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="10dp"
+            />
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="内容"
-            android:textColor="#000"
-            android:textSize="26dp" />
+            android:layout_marginTop="25dp"
+            android:layout_centerHorizontal="true"
+            android:text="详细信息"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            />
+
+        <TextView
+            android:id="@+id/reback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="回信"
+            android:textSize="18sp"
+            android:textColor="#fff" />
     </RelativeLayout>
 
     <view.FrameRelativeLayout
@@ -36,18 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="40dp">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-
-            android:layout_alignParentTop="true"
-            android:gravity="center"
-            android:textColor="#000"
-            android:textSize="24dp" />
 
         <TextView
             android:id="@+id/info"

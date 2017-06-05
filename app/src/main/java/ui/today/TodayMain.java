@@ -120,6 +120,8 @@ public class TodayMain extends AppCompatActivity {
         JsonObject object = (JsonObject) parser.parse(s);
         String msg = object.get("msg").getAsString();
         Integer state = object.get("statues").getAsInt();
+        if (state == 0)
+            return;
         JsonArray array = object.get("datalist").getAsJsonArray();
         mList.clear();
         for(int i =0;i<array.size();i++){
