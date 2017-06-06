@@ -3,6 +3,8 @@ package ui.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mInfo;
     private ImageView img ;
     private TextView name;
+    private static boolean Wel = true;
 
 
 
@@ -43,10 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isFirst()){
-            int requestCode = 1;
-            startActivityForResult(new Intent(getApplication(), Login.class),requestCode);
-        }
+
         setInfo();
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -97,30 +97,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        name.setText(Global.MAIN_USER.getUsername());
-        img.setImageBitmap(null);
-        Picasso.with(MainActivity.this)
-                .load(new File(Global.MAIN_USER.getUserphoto()))
-                .into(img);
-        Log.i("main photopath",Global.MAIN_USER.getUserphoto());
-    }
+        try {
+            name.setText(Global.MAIN_USER.getUsername());
+            img.setImageBitmap(null);
+            String imgString = Global.MAIN_USER.getUserphoto();
+            if (imgString == null)
+                return;
+            else if (imgString.contains("http://")) {
+                Picasso.with(MainActivity.this)
+                        .load(imgString)
+                        .into(img);
+            }
+            else
+                Picasso.with(MainActivity.this)
+                        .load(new File(imgString))
+                        .into(img);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("re",requestCode + " " + resultCode);
-        if (requestCode == 1){
-            if (resultCode == Login.RESULT_FINISH)
-                finish();
+            Log.i("main photopath", Global.MAIN_USER.getUserphoto());
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
     }
 
-    private boolean isFirst()
-    {
-        SharedPreferences preferences = getSharedPreferences("firstinfo",MODE_PRIVATE);
-        Log.i("isfirst",preferences.getBoolean("first",true)+"");
-        return preferences.getBoolean("first",true);
-    }
+
+
 
     private void initListItem() {
         mListView = (ListView) findViewById(R.id.listview);

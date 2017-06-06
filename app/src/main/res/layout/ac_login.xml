@@ -3,10 +3,11 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eeeeee"
+    android:background="@drawable/hsl"
     android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingRight="10dp"
+    >
 
     <ImageView
         android:id="@+id/userimage"
@@ -15,7 +16,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:clickable="true"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/logo" />
 
 
     <EditText
@@ -73,8 +74,17 @@
             android:clickable="true"
             android:text="注册"
             android:layout_marginRight="10dp"
-            android:textColor="#4A4AFF"
-            android:textSize="18sp" />
+            android:textColor="#738ffe"
+            android:textSize="16sp" />
+
+        <TextView
+            android:text="没有帐号？"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/register"
+            android:layout_toStartOf="@+id/register"
+            android:textSize="16sp"
+            android:id="@+id/textView" />
     </RelativeLayout>
 
 </LinearLayout>

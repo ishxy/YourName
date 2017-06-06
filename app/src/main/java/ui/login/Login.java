@@ -21,6 +21,7 @@ import com.shxy.dazuoye.R;
 import bean.User;
 import cz.msebera.android.httpclient.Header;
 import global.Global;
+import ui.main.MainActivity;
 import util.HttpRequest;
 import view.BaseActivity;
 
@@ -35,6 +36,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
     private ImageView img;
     private Button loginButton;
     private TextView toRegister;
+    public static int next = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
 
                         User user = gson.fromJson(new String(responseBody), User.class);
                         if (user.getStatues() == 1){
-                            setResult(RESULT_OK);
+
 
                             SharedPreferences preferences = getSharedPreferences("firstinfo",MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
@@ -83,6 +85,8 @@ public class Login extends BaseActivity implements View.OnClickListener {
                             editor.putString("photo",user.getUserphoto());
                             editor.commit();
                             Global.MAIN_USER = user;
+                            next = 1;
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }else{
                             Toast.makeText(getApplicationContext(),user.getMsg(),Toast.LENGTH_SHORT).show();
@@ -104,17 +108,5 @@ public class Login extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK){
-            setResult(RESULT_FINISH);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        setResult(RESULT_FINISH);
-    }
 }
