@@ -72,6 +72,7 @@ public class TaskProgress extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         Random random = new Random();
+        mList = new ArrayList<>();
         setContentView(R.layout.ac_task);
         getInfo();
         initFragments();
@@ -154,6 +155,7 @@ public class TaskProgress extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
         if (mListView == null) {
             mListView = (ListView) findViewById(R.id.list);
+
             mListView.setAdapter(mAdapter);
 
         }
@@ -213,7 +215,8 @@ public class TaskProgress extends AppCompatActivity {
         JsonObject object = (JsonObject) parser.parse(json);
         Integer statues = object.get("statues").getAsInt();
         String msg = object.get("msg").getAsString();
-
+        if(statues == 0)
+            return;
         flag = object.get("flag").getAsInt();
         if (flag == 1) {
             mFragmentManager.beginTransaction().hide(mFragments[0]).show(mFragments[1]).commit();
@@ -223,7 +226,7 @@ public class TaskProgress extends AppCompatActivity {
             randuserid = object.get("randuserid").getAsInt();
             choisenday = object.get("choisenday").getAsString();
         }
-        mList = new ArrayList<>();
+
         if (statues == 0) {
             Log.i("msg", msg);
             return;
