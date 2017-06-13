@@ -53,38 +53,29 @@
         android:layout_height="match_parent"
         android:paddingBottom="10dp">
 
-        <!--<TextView
-            android:id="@+id/login_to_losspass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:text="忘记密码"
-            android:textColor="#4A4AFF"
-            android:layout_marginLeft="10dp"
+    <!-- <TextView
+    android:id="@+id/login_to_losspass"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:text="忘记密码"
+    android:textColor="#4A4AFF"
+    android:layout_marginLeft="10dp"
 
-            android:textSize="18sp" />  -->
+    android:textSize="18sp" />-->
 
-        <TextView
-            android:id="@+id/register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:text="注册"
-            android:layout_marginRight="10dp"
-            android:textColor="#738ffe"
-            android:textSize="16sp" />
-
-        <TextView
-            android:text="没有帐号？"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/register"
-            android:layout_toStartOf="@+id/register"
-            android:textSize="16sp"
-            android:id="@+id/textView" />
+<TextView
+    android:id="@+id/login_to_register"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:clickable="true"
+    android:text="注册"
+    android:layout_marginRight="10dp"
+    android:textColor="#4A4AFF"
+    android:textSize="18sp" />
     </RelativeLayout>
 
 </LinearLayout>

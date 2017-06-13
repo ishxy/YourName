@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             Integer id = preferences.getInt("id",0);
             String sec = preferences.getString("sec","null");
             String username = preferences.getString("username","null");
-            String photo = preferences.getString("photo",null);
+            String photo = preferences.getString("photo","");
             Log.i("photo",photo);
             User u = new User();
             u.setId(id);

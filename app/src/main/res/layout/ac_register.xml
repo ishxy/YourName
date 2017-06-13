@@ -99,6 +99,7 @@
 
 
         <EditText
+            android:visibility="gone"
             android:id="@+id/register_nickname"
             style="@style/login_edit"
             android:layout_width="match_parent"

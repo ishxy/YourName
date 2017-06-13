@@ -44,11 +44,14 @@ public class Welcome extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_BEGIN:
-                    if (isFirst())
+                    if (isFirst()) {
                         startActivity(new Intent(getApplicationContext(), Login.class));
-                    else
+                        finish();
+                    }
+                    else {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
+                        finish();
+                    }
                     break;
             }
         }
