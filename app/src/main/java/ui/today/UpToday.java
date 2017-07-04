@@ -21,8 +21,11 @@ import com.loopj.android.http.RequestParams;
 import com.shxy.dazuoye.R;
 import com.squareup.picasso.Picasso;
 
+import org.nutz.img.Images;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.BuildConfig;
@@ -100,6 +103,8 @@ public class UpToday extends AppCompatActivity {
                 .setEnableRotate(true)
                 .setCropSquare(true)
                 .setEnablePreview(true)
+                .setCropHeight(400)
+                .setCropWidth(300)
                 .build();
 
 //配置imageloader
@@ -115,8 +120,8 @@ public class UpToday extends AppCompatActivity {
         GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, new GalleryFinal.OnHanlderResultCallback() {
             @Override
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                Toast.makeText(getApplicationContext(), "file://" + resultList.get(0).getPhotoPath(), Toast.LENGTH_SHORT).show();
                 imgFile = new File(resultList.get(0).getPhotoPath());
+                Toast.makeText(getApplicationContext(), "file://" + resultList.get(0).getPhotoPath(), Toast.LENGTH_SHORT).show();
                 imageloader.displayImage(UpToday.this, resultList.get(0).getPhotoPath(), select, null, 600, 600);
             }
 

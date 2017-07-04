@@ -2,9 +2,10 @@ package bean;
 
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
-public class Diary implements Serializable{
+public class Diary<T> implements Serializable{
 
     private int id;
 
@@ -69,4 +70,6 @@ public class Diary implements Serializable{
     public void setContentphote(String contentphote) {
         this.contentphote = contentphote;
     }
+
+    
 }
