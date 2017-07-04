@@ -10,8 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shxy.dazuoye.R;
 
+import cz.msebera.android.httpclient.Header;
+import util.HttpRequest;
 import view.BaseActivity;
 
 
@@ -68,6 +74,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
     }
 
     private void postPhone() {
+
         phone = numberEditText.getText().toString();
         if (phone.length() <= 0) {
             Toast.makeText(getApplicationContext(), "手机号不能为空", Toast.LENGTH_SHORT).show();
@@ -78,31 +85,29 @@ public class Register extends BaseActivity implements View.OnClickListener {
             Toast.makeText(getApplicationContext(), "稍后再试", Toast.LENGTH_SHORT).show();
             return;
         }
-        /*RequestParams requestParams = new RequestParams();
-        requestParams.add("UserPhone", phone);
-        UserService service = new UserService();
-        String url = "sendmessage/";
-        service.post(getApplicationContext(), url, requestParams, new Listener() {
+        RequestParams requestParams = new RequestParams();
+        requestParams.add("userphone", phone);
+        HttpRequest.post(getApplicationContext(), "reigister1", requestParams, new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(Object object) {
-                UserModel userModel = (com.example.rental.model.UserModel) object;
-                Integer state = userModel.getState();
-                String msg = userModel.getMsg();
-//                Toast.makeText(getApplicationContext(),"onSuccess in!",Toast.LENGTH_SHORT).show();
-                if (state == 1) {
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String json = new String(responseBody);
+                JsonParser p = new JsonParser();
+                JsonObject object = (JsonObject) p.parse(json);
+                Integer state = object.get("statues").getAsInt();
+                String msg = object.get("msg").getAsString();
+                if (state == 1){
                     onGetCheckCodeSuccess();
-                    //成功
-                } else {
-                    Toast.makeText(getApplicationContext(), "失败" + msg, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
 
             @Override
-            public void onFailure(String msg) {
-                Toast.makeText(getApplicationContext(), "与服务器请求失败", Toast.LENGTH_SHORT).show();
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getApplicationContext(), new String(responseBody), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
     }
 
     private void postAll() {
@@ -131,38 +136,38 @@ public class Register extends BaseActivity implements View.OnClickListener {
         /*if ((!CheckString.compare(password1, getApplicationContext())) || (!CheckString.compare(nickname, getApplicationContext()))) {
             Toast.makeText(getApplicationContext(), "...", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
+        /*
         String Md5_password = Md5.getMD5(password1);
-
+*/
         RequestParams requestParams = new RequestParams();
-        requestParams.put("UserPhone", phone);
-        requestParams.put("CheckCode", checkCode);
-        requestParams.put("PassWord", Md5_password);
-        requestParams.put("NickName", nickname);
+        requestParams.put("userphone", phone);
+        requestParams.put("checkcode", checkCode);
+        requestParams.put("password", password1);
+        //requestParams.put("NickName", nickname);
 
-        UserService service = new UserService();
-        String url = "reg/";
-        service.post(getApplicationContext(), url, requestParams, new Listener() {
+        HttpRequest.post(getApplicationContext(), "reigister2", requestParams, new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(Object object) {
-
-                UserModel userModel = (UserModel) object;
-                Integer state = userModel.getState();
-                if (state == 1) {
-                    Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
-                    if (getApplicationContext() instanceof FRegisterClickListener) {
-                        ((FRegisterClickListener) getApplicationContext()).onFRegisterClick();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "注册失败", Toast.LENGTH_SHORT).show();
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String json = new String(responseBody);
+                JsonParser p = new JsonParser();
+                JsonObject object = (JsonObject) p.parse(json);
+                Integer state = object.get("statues").getAsInt();
+                String msg = object.get("msg").getAsString();
+                if (state == 1){
+                    Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
 
             @Override
-            public void onFailure(String msg) {
-                Toast.makeText(getApplicationContext(), "请求失败" + msg, Toast.LENGTH_SHORT).show();
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getApplicationContext(),new String(responseBody),Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
+
     }
 
 

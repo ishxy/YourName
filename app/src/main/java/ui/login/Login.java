@@ -32,11 +32,9 @@ public class Login extends BaseActivity implements View.OnClickListener {
     public static Integer RESULT_FINISH = -1;
     public static Integer RESULT_OK = 1;
     private EditText usernameEditText, passwordEditText;
-   // private TextView registerText, loseText;
+    private TextView registerText, loseText;
     private ImageView img;
     private Button loginButton;
-    private TextView toRegister;
-    public static int next = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,13 +46,12 @@ public class Login extends BaseActivity implements View.OnClickListener {
     private void initView() {
         usernameEditText = (EditText) findViewById(R.id.login_zhanghao);
         passwordEditText = (EditText) findViewById(R.id.login_password);
-        //registerText = (TextView) findViewById(R.id.login_to_register);
+        registerText = (TextView) findViewById(R.id.login_to_register);
         //loseText = (TextView) findViewById(R.id.login_to_losspass);
         loginButton = (Button) findViewById(R.id.login_button);
         img = (ImageView) findViewById(R.id.userimage);
         loginButton.setOnClickListener(this);
-        toRegister = (TextView) findViewById(R.id.register);
-        toRegister.setOnClickListener(this);
+        registerText.setOnClickListener(this);
     }
 
     @Override
@@ -74,7 +71,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
 
                         User user = gson.fromJson(new String(responseBody), User.class);
                         if (user.getStatues() == 1){
-
+                            setResult(RESULT_OK);
 
                             SharedPreferences preferences = getSharedPreferences("firstinfo",MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
@@ -85,8 +82,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
                             editor.putString("photo",user.getUserphoto());
                             editor.commit();
                             Global.MAIN_USER = user;
-                            next = 1;
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(Login.this, MainActivity.class));
                             finish();
                         }else{
                             Toast.makeText(getApplicationContext(),user.getMsg(),Toast.LENGTH_SHORT).show();
@@ -100,7 +96,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
                     }
                 });
                 break;
-            case R.id.register:
+            case R.id.login_to_register:
                 startActivity(new Intent(Login.this,Register.class));
                 break;
             /*case R.id.login_to_losspass:
@@ -108,5 +104,17 @@ public class Login extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            setResult(RESULT_FINISH);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setResult(RESULT_FINISH);
+    }
 }

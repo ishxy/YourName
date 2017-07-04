@@ -91,16 +91,22 @@ public class SelfMain extends BaseActivity implements View.OnClickListener {
             return;
         }
         Log.i("json", jsonString);
-        String name = o.get("username").getAsString();
-        Integer age = o.get("age").getAsInt();
-        String sex = o.get("sex").getAsString();
         String photoUrl = o.get("photo").getAsString();
+        try {
+            String name = o.get("username").getAsString();
+            Integer age = o.get("age").getAsInt();
+            String sex = o.get("sex").getAsString();
+
+
         Picasso.with(getApplicationContext())
                 .load(photoUrl)
                 .into(img);
         nameText.setText(name);
         ageText.setText(age + "");
         sexText.setText(sex);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initView() {

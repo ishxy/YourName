@@ -242,12 +242,14 @@ public class TaskProgress extends AppCompatActivity {
                 taskState.add(state.get(i).getAsInt());
             }
         }
-
+        if(mList!=null)
+        mList.clear();
         for (int i = 0; i < datalist.size(); i++) {
             Diary diary = new Diary();
             JsonObject each = datalist.get(i).getAsJsonObject();
             diary.setContent(each.get("content").getAsString());
             diary.setContentphote(each.get("contentphote").getAsString());
+
             mList.add(diary);
         }
     }
